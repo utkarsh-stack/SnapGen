@@ -1,13 +1,8 @@
 "user server"
-
-import mongoose from "mongoose"
 import { handleError } from "../utils"
 import { connectToDatabase } from "../database/mongoose"
 import User from "../database/models/user.model";
-import { json } from "stream/consumers";
-import { use } from "react";
 import { revalidatePath } from "next/cache";
-import { error } from "console";
 
 //Create User
 export async function createUser(user:CreateUserParams) {
