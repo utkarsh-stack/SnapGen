@@ -1,4 +1,4 @@
-"user server"
+"use server"
 import { handleError } from "../utils"
 import { connectToDatabase } from "../database/mongoose"
 import User from "../database/models/user.model";
