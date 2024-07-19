@@ -65,4 +65,22 @@ export async function deleteUserById(clerkId: String){
   }
 }
 
+//Use credit
+
+export async function updateCredit(userId: string, creditFee: Number){
+  try{
+    await connectToDatabase();
+    const updatedUserCredit = await User.findOneAndUpdate(
+      {_id: userId},
+      {$inc: {creditBalance: creditFee}},
+      {new: true}
+    )
+    if(!updatedUserCredit) throw new Error("User credit update failed")
+    return JSON.parse(JSON.stringify(updatedUserCredit))
+
+  }catch(error){
+    handleError(error)
+  }
+}
+
 
