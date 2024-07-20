@@ -15,10 +15,11 @@ const Profile = async ({ searchParams }: SearchParamProps) => {
 
   const user = await getUserById(userId);
   const images = await getUserImages({ page, userId: user._id });
+  const firstName = String(user.firstName)
 
   return (
     <>
-      <Header title="Profile" />
+      <Header title={"Hey "+firstName+","} />
 
       <section className="profile">
         <div className="profile-balance">

@@ -1,6 +1,10 @@
 import React from 'react'
 
 const Header = ({title, subtitle}:{title: string, subtitle?: string}) => {
+  console.log(title)
+  console.log(typeof(title))
+  console.log(subtitle)
+  console.log(typeof(subtitle))
   return (
     <>
     <h2 className='h2-bold text-dark-600'>{title}</h2>
