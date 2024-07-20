@@ -11,7 +11,7 @@ import {redirect} from 'next/navigation'
 const populateUser = (query: any) => query.populate({
   path: 'author',
   model: User,
-  select: '_id firstName lastName'
+  select: '_id firstName lastName clerkId'
 })
 
 //Add Image
@@ -20,16 +20,10 @@ export async function addImage({image, userId, path}: AddImageParams){
     await connectToDatabase()
     const author = await User.findById(userId)
     if(!author) throw new Error("User not found")
-    console.log("Author found in addImage")
-    console.log(author)
-    console.log("image received in addImage function")
-    console.log(image)
     const newImage = await Image.create({
       ...image,
       author: author._id
     })
-    console.log("new image Created by addImage")
-    console.log(newImage)
     revalidatePath(path)
     return JSON.parse(JSON.stringify(newImage))
   }catch(error){
@@ -44,7 +38,7 @@ export async function updateImage({image, userId, path}: UpdateImageParams){
     const author = await User.findById(userId)
     if(!author) throw new Error("User not found")
     const imageToUpdate = await Image.findById(image._id)
-    if(!imageToUpdate || !(imageToUpdate.author.toHexString()!=userId)) 
+    if(!imageToUpdate || imageToUpdate.author.toHexString()!=userId) 
       throw new Error("User not authorized or Image not found")
 
     const updatedImage = await User.findByIdAndUpdate(
@@ -79,7 +73,7 @@ export async function getImageById(imageId: string){
     // const image = await Image.findById(imageId)
     if(!image) return new Error("Image not found")
     
-    return JSON.parse(JSON.stringify(imageId))
+    return JSON.parse(JSON.stringify(image))
   }catch(error){
     handleError(error)
   }
@@ -108,7 +102,6 @@ export async function getAllImages({limit=9, page=1, searchQuery=''}:{
             .expression(expression)
             .execute();
     
-    console.log(resources)
     
     const resourcesIds = resources.map((resource:any) => resource.public_id);
     let query = {}

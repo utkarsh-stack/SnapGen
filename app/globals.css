@@ -426,6 +426,14 @@ $turquoise: #1abc9c; */
   color: #fff;
   /* transform: translateY(-7px); */
 }
+
+.tooltip {
+  @apply invisible absolute;
+}
+
+.has-tooltip:hover .tooltip {
+  @apply visible z-50;
+}
 /* .btn {
 	width: 30%;
   min-width: 300px;

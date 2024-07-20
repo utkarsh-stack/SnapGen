@@ -74,12 +74,6 @@ const TransformationForm = ({action, data = null, userId, type, creditBalance, c
         src: image?.publicId,
         ...transformationConfig
       })
-      console.log("data present in onSubmit:")
-      console.log(data)
-      console.log("Image present in onSubmit")
-      console.log(image)
-      console.log("Transformation URL:")
-      console.log(transformationUrl)
 
       const imageData = {
         title: values.title,
@@ -94,20 +88,14 @@ const TransformationForm = ({action, data = null, userId, type, creditBalance, c
         prompt: values.prompt,
         color: values.color
       }
-      console.log("Image Data in onSubmit:")
-      console.log(imageData)
 
       if(action === 'Add'){
         try {
-          console.log("imageData inside add action")
-          console.log(imageData)
           const newImage = await addImage({
             image: imageData,
             userId,
             path: '/'
           })
-          console.log("newImage data inside Add action")
-          console.log(newImage)
 
           if(newImage){
             form.reset()
@@ -143,7 +131,6 @@ const TransformationForm = ({action, data = null, userId, type, creditBalance, c
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     setisSubmitting(false)
-    console.log(values)
   }
 
   const onSelectFieldHandler = (value: string, onChangeField: (value: string) => void) => {
@@ -157,8 +144,6 @@ const TransformationForm = ({action, data = null, userId, type, creditBalance, c
     }))
     // Setting new transformation type we'r setting new state because same function is used in two pages
     setnewTransformation(transformationType.config)
-    console.log(image)
-    console.log(newTransformation)
     return onChangeField(value)
   }
 
@@ -169,49 +154,26 @@ const TransformationForm = ({action, data = null, userId, type, creditBalance, c
     type: string, 
     onChangeField: (value: string) => void 
   ) =>{
-    console.log(value)
-    console.log("Inside debouce function")
-    // Setting new transformation object
-    setnewTransformation((prevState: any) =>({
-      ...prevState,
-      [type]: {
-        ...prevState?.[type],
-        [fieldName==='prompt'? 'prompt' : 'to']: value
-      }
-    }))
-    console.log("new transformation set after debounce")
-    console.log(newTransformation)
     // This function gets triggerred as soon as we enter something in input field
     // To minimize credit balance reduction unnecessary, added wait for 10sec before registering user input
-    // debounce(()=>{
-    //   console.log("Inside debouce function")
-    //   // Setting new transformation object
-    //   setnewTransformation((prevState: any) =>({
-    //     ...prevState,
-    //     [type]: {
-    //       ...prevState?.[type],
-    //       [fieldName==='prompt'? 'prompt' : 'to']: value
-    //     }
-    //   }))
-    //   console.log("new transformation set after debounce")
-    //   console.log(newTransformation)
-    //   // setnewTransformation(null)
-    //   // startTransition(async ()=>{
-    //   //   // updateCredit(userId, creditFee)
-    //   // })
-
-    // }, 1000);
+    debounce(()=>{
+      // Setting new transformation object
+      setnewTransformation((prevState: any) =>({
+        ...prevState,
+        [type]: {
+          ...prevState?.[type],
+          [fieldName==='prompt'? 'prompt' : 'to']: value
+        }
+      }))
+    }, 1000)();
     return onChangeField(value)
   }
 
   const onTransformationHandler = async ()=>{
-    console.log(newTransformation)
-    console.log(transformationConfig)
     setisTransforming(true)
     settransformationConfig(
       deepMergeObjects(newTransformation, transformationConfig)
     )
-    console.log(transformationConfig)
     setnewTransformation(null)
     startTransition( async ()=>{
       await updateCredit(userId, creditFee)
@@ -246,6 +208,7 @@ const TransformationForm = ({action, data = null, userId, type, creditBalance, c
                 render={({ field }) => (
                   <Select
                   onValueChange={(value)=> onSelectFieldHandler(value, field.onChange)}
+                  value={field.value}
                   >
                   <SelectTrigger className="select-field">
                     <SelectValue placeholder="Select size" />
