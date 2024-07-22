@@ -9,7 +9,6 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import UserCard from '@/components/shared/UserCard';
 import { findAllFriendRequests } from '@/lib/actions/friendRequest.action';
-const { userId } = auth();
 
 const FriendsPage = async () => {
   // const [user, setUser] = useState(null);
