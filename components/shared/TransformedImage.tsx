@@ -35,11 +35,9 @@ const TransformedImage = (
           <div>
             <button
               data-tooltip-target="tooltip-default"
-              className='has-tooltip download-btn'
+              className='download-btn'
               onClick={downloadHandler}
             >
-              <span className='tooltip rounded shadow-lg p-1 bg-gray-100 text-grey -mt-10'>Download</span>
-
               <Image
                 src="/assets/icons/download.svg"
                 alt='Download'
