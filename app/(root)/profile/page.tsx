@@ -6,6 +6,8 @@ import Header from "@/components/shared/Header";
 import { auth } from "@clerk/nextjs/server";
 import { getUserById } from "@/lib/actions/user.action";
 import { getUserImages } from "@/lib/actions/image.action";
+import { Search } from "@/components/shared/Search";
+import FriendsTab from "@/components/shared/FriendsTab";
 
 const Profile = async ({ searchParams }: SearchParamProps) => {
   const page = Number(searchParams?.page) || 1;
@@ -14,6 +16,7 @@ const Profile = async ({ searchParams }: SearchParamProps) => {
   if (!userId) redirect("/sign-in");
 
   const user = await getUserById(userId);
+  const friendList = user.friends
   const images = await getUserImages({ page, userId: user._id });
   const firstName = String(user.firstName)
 
@@ -49,6 +52,20 @@ const Profile = async ({ searchParams }: SearchParamProps) => {
             <h2 className="h2-bold text-dark-600">{images?.data.length}</h2>
           </div>
         </div>
+        <FriendsTab userId={userId} friendList={friendList}/>
+        {/* <div className="profile-image-manipulation" onClick={onClickFriendsTab}>
+          <p className="p-14-medium md:p-16-medium">FRIENDS</p>
+          <div className="mt-4 flex items-center gap-4">
+            <Image
+              src="/assets/icons/photo.svg"
+              alt="coins"
+              width={50}
+              height={50}
+              className="size-9 md:size-12"
+            />
+            <h2 className="h2-bold text-dark-600">{images?.data.length}</h2>
+          </div>
+        </div> */}
       </section>
 
       <section className="mt-8 md:mt-14">

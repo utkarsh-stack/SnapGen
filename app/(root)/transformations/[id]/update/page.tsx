@@ -32,6 +32,7 @@ const Page = async ({ params: { id } }: SearchParamProps) => {
           creditBalance={user.creditBalance}
           config={image.config}
           data={image}
+          isPublicState={image.public}
         />
       </section>
     </>

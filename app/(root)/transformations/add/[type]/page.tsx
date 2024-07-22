@@ -23,6 +23,7 @@ const AddTransformationTypePage = async ({params: {type}}: (SearchParamProps)) =
       userId={user._id}
       type = {transformationData.type as TransformationTypeKey}
       creditBalance={user.creditBalance}
+      isPublicState={true}
       />  
     </section>
      

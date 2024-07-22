@@ -10,6 +10,12 @@ declare type CreateUserParams = {
   photo: string;
 };
 
+declare type FriendRequestParams = {
+  from: string,
+  to: string,
+  status: number
+};
+
 declare type UpdateUserParams = {
   firstName: string | null;
   lastName: string | null;
@@ -31,6 +37,7 @@ declare type AddImageParams = {
     aspectRatio: string | undefined;
     prompt: string | undefined;
     color: string | undefined;
+    public: boolean;
   };
   userId: string;
   path: string;
@@ -50,6 +57,7 @@ declare type UpdateImageParams = {
     aspectRatio: string | undefined;
     prompt: string | undefined;
     color: string | undefined;
+    public: boolean;
   };
   userId: string;
   path: string;
@@ -125,6 +133,7 @@ declare type TransformationFormProps = {
   creditBalance: number;
   data?: IImage | null;
   config?: Transformations | null;
+  isPublicState:boolean
 };
 
 declare type TransformedImageProps = {

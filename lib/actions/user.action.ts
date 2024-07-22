@@ -20,9 +20,56 @@ export async function createUser(user:CreateUserParams) {
 export async function getUserByEmail(userEmail: String){
   try{
     await connectToDatabase();
-    const user = User.findOne({email:userEmail})
+    const user = await User.findOne({email:userEmail})
+    if(!user) throw new Error("User not found");
     return JSON.parse(JSON.stringify(user));
   }catch(error){
+    handleError(error);
+  }
+}
+
+export async function removeFriend(clerkId: string, friendId: string) {
+  try {
+    await connectToDatabase();
+
+    // Find the user and update the friends array
+    const updatedUser = await User.findOneAndUpdate(
+      { clerkId }, // Match by userId
+      { $pull: { friends: friendId } }, // Remove friendId from the friends array
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedUser) {
+      throw new Error("User not found");
+    }
+    revalidatePath("/friends");
+
+    return JSON.parse(JSON.stringify(updatedUser));
+  } catch (error) {
+    handleError(error);
+  }
+}
+
+export async function addFriend(clerkId: string, friendId: string) {
+  try {
+    await connectToDatabase();
+
+    // Find the user and update the friends array
+    const updatedUser = await User.findOneAndUpdate(
+      { clerkId }, // Match by userId
+      { $addToSet: { friends: friendId } }, // Add friendId to the friends array
+      { new: true } // Return the updated document
+    );
+
+
+    if (!updatedUser) {
+      throw new Error("User not found");
+    }
+
+    revalidatePath("/friends");
+
+    return JSON.parse(JSON.stringify(updatedUser));
+  } catch (error) {
     handleError(error);
   }
 }
@@ -38,6 +85,7 @@ export async function getUserById(userId: String){
     handleError(error);
   }
 }
+
 
 //Update User
 export async function updateUser(clerkId: String, updatedData: UpdateUserParams){
@@ -72,6 +120,22 @@ export async function updateCredit(userId: string, creditFee: Number){
     await connectToDatabase();
     const updatedUserCredit = await User.findOneAndUpdate(
       {_id: userId},
+      {$inc: {creditBalance: creditFee}},
+      {new: true}
+    )
+    if(!updatedUserCredit) throw new Error("User credit update failed")
+    return JSON.parse(JSON.stringify(updatedUserCredit))
+
+  }catch(error){
+    handleError(error)
+  }
+}
+
+export async function updateCreditByClerkId(userId: string, creditFee: Number){
+  try{
+    await connectToDatabase();
+    const updatedUserCredit = await User.findOneAndUpdate(
+      {clerkId: userId},
       {$inc: {creditBalance: creditFee}},
       {new: true}
     )

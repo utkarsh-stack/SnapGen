@@ -1,7 +1,7 @@
 import mongoose, { Schema, models } from "mongoose";
 
 export interface IUser extends Document {
-  clerkId: number;
+  clerkId: string;
   email?: string;
   username: string;
   photo?: string;
@@ -9,6 +9,8 @@ export interface IUser extends Document {
   lastName: string;
   planId: number;
   creditBalance: number;
+  friends: string[]
+  // friends: Schema.Types.ObjectId[];
 }
 
 const UserSchema = new Schema({
@@ -20,6 +22,8 @@ const UserSchema = new Schema({
   lastName: {type: String},
   planId: {type: Number, default: 1},
   creditBalance: {type: Number, default: 10},
+  friends:[{type:String, default:[]}]
+  // friends: [{type:Schema.Types.ObjectId, ref:'User',default:[]}]
 })
 
 const User = models?.User || mongoose.model("User", UserSchema)

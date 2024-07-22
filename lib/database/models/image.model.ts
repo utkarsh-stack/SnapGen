@@ -18,6 +18,7 @@ export interface IImage extends Document {
     firstName: String;
     lastName: String;
   };
+  public?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -35,6 +36,7 @@ const ImageSchema = new Schema({
   color: {type: String},
   prompt: {type: String},
   author: {type: Schema.Types.ObjectId, ref: 'User'},
+  public: {type:Boolean, default:true},
   createdAt: {type: Date, default: Date.now},
   updatedAt: {type: Date, default: Date.now}
 })
