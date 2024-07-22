@@ -64,7 +64,7 @@ export const Collection = ({
         </ul>
       ) : (
         <div className="collection-empty">
-          <p className="p-20-semibold">Empty List</p>
+          <p className="p-20-semibold">{hasSearch?"None of your friends have saved any edits":"No edits saved by you"}</p>
         </div>
       )}
 
