@@ -48,6 +48,7 @@ const FriendsPage = async () => {
               profilePicSrc={friend.photo}
               friendRequestCard={false}
               userCredit={user.creditBalance}
+              key={uid}
               />
             )
           })
@@ -69,6 +70,7 @@ const FriendsPage = async () => {
               profilePicSrc={friend.photo}
               friendRequestCard={true}
               userCredit={user.creditBalance}
+              key={uid}
               />
             )
           })
